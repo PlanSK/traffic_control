@@ -1,9 +1,9 @@
 #!/bin/bash
-WAN=enp0s8
-LAN=ifb0
+dst_iface=enp0s8
+src_iface=ifb0
 
 
 echo "Cleaning root qdisc"
-tc qdisc del dev $WAN root
-tc qdisc del dev $LAN root
-tc qdisc del dev $WAN ingress
+tc qdisc del dev $dst_iface root
+tc qdisc del dev $src_iface root
+tc qdisc del dev $dst_iface ingress
