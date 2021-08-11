@@ -12,7 +12,7 @@ echo "Set redirect ingress traffic to $LAN"
 tc qdisc add dev $WAN ingress
 tc filter add dev $WAN parent ffff: protocol ip u32 match u32 0 0 action mirred egress redirect dev $LAN
 
-echo "Set rules on $WAN interface"
+echo "Set rules on $WAN interface" # ingress from wlan
 tc qdisc add dev $WAN root handle 1:0 htb default 15
 tc class add dev $WAN parent 1:0 classid 1:1 htb rate 1Gbit ceil 1Gbit
 
@@ -24,7 +24,7 @@ tc qdisc add dev $WAN parent 1:11 handle 11:0 sfq perturb 10
 tc qdisc add dev $WAN parent 1:12 handle 12:0 sfq perturb 10
 tc qdisc add dev $WAN parent 1:15 handle 15:0 sfq perturb 10
 
-echo "Set rules on $LAN interface"
+echo "Set rules on $LAN interface" # egress to wlan
 tc qdisc add dev $LAN root handle 1:0 htb default 15
 tc class add dev $LAN parent 1:0 classid 1:1 htb rate 1Gbit ceil 1Gbit
 
