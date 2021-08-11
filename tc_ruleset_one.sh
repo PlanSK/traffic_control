@@ -1,7 +1,7 @@
 #!/bin/bash
 WAN=enp0s8
 LAN=ifb0
-
+SUBNET=10.1.0.0/24
 
 echo "Cleaning root qdisc"
 tc qdisc del dev $WAN root
@@ -37,6 +37,6 @@ tc qdisc add dev $LAN parent 1:12 handle 12:0 sfq perturb 10
 tc qdisc add dev $LAN parent 1:15 handle 15:0 sfq perturb 10
 
 echo "Filtering addresses"
-tc filter add dev $WAN protocol ip parent 1:0 prio 1 u32 match ip dst 10.1.0.0/24 flowid 1:11
+tc filter add dev $WAN protocol ip parent 1:0 prio 1 u32 match ip dst $SUBNET flowid 1:11
 
-tc filter add dev $LAN protocol ip parent 1:0 prio 1 u32 match ip src 10.1.0.0/24 flowid 1:11
+tc filter add dev $LAN protocol ip parent 1:0 prio 1 u32 match ip src $SUBNET flowid 1:11
