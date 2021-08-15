@@ -3,10 +3,11 @@ dst_iface=enp0s8 # to client
 src_iface=ifb0 # from client
 
 
-echo "Cleaning root qdisc"
-tc qdisc del dev $dst_iface root
-tc qdisc del dev $src_iface root
-tc qdisc del dev $dst_iface ingress
+echo "Loading IFB module to kernel"
+modprobe ifb
+
+echo "Setting up ifb0 interface"
+ip link set dev $src_iface up
 
 echo "Set redirect ingress traffic to $LAN"
 tc qdisc add dev $dst_iface ingress
